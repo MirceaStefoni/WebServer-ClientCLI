@@ -1,0 +1,142 @@
+# Product Requirements Document (PRD)
+
+## Title:
+C++ Web Server and CLI Client – Multi-threaded TCP Communication Tool
+
+---
+
+## Overview:
+Acest proiect reprezintă o aplicație de rețea formată dintr-un server TCP multi-threaded și un client în linia de comandă (CLI), ambele implementate în C++. Clientul trimite comenzi de tip `GET` și `POST`, iar serverul le interpretează, procesează și răspunde corespunzător. Sistemul este un exercițiu practic de programare în C++ modern, networking, paralelism și arhitectură modulară.
+
+---
+
+## Goals:
+- Implementarea unui server TCP robust care poate deservi mai mulți clienți simultan.
+- Dezvoltarea unui client CLI în C++ capabil să trimită comenzi simple către server.
+- Demonstratea unor cunoștințe solide de:
+  - Programare orientată pe obiecte (OOP)
+  - STL (Standard Template Library)
+  - Concurență (std::thread, mutex)
+  - Networking (socket programming)
+  - Arhitectură modulară
+- Documentarea clară și structura curată a codului sursă.
+- Logare, caching și gestionare eficientă a memoriei.
+
+---
+
+## Functional Requirements:
+
+### 1. Server
+- Ascultă pe un port TCP configurabil (default: 8080).
+- Acceptă conexiuni multiple prin fire de execuție separate.
+- Comenzi suportate:
+  - `GET /status` → răspuns: `200 OK – Server running`
+  - `POST /data <payload>` → răspuns: `201 Created – Data received`
+- Salvează datele trimise de client în memorie (cache).
+- Loghează fiecare cerere într-un fișier `log.txt` cu timestamp.
+- Poate fi închis cu o comandă specială `GET /shutdown` (opțional).
+
+### 2. Client CLI
+- Aplicație în linia de comandă care permite utilizatorului să trimită comenzi.
+- Exemple de utilizare:
+  - `./client GET /status`
+  - `./client POST /data "Hello from client"`
+- Afișează răspunsul primit de la server în consolă.
+- Se reconectează automat în cazul unei deconectări (opțional).
+
+---
+
+## Non-Functional Requirements:
+- Limbaj: C++17
+- Platformă țintă: Linux (cu posibilitate de portare pe Windows)
+- Build system: CMake
+- Thread-safety și race condition-free
+- Logging fiabil și ușor de extins
+- Cod modular, împărțit în directoare: `server/`, `client/`, `common/`, `include/`
+
+---
+
+## Architecture:
+
+Client CLI
+|
+|---> TCP connection
+|
+Server TCP
+|
++------+-------+
+| ThreadPool |
+| |
++-----+-------+------+------+
+| ClientHandler (per connection)
+| - Parse command
+| - Handle GET/POST
+| - Log and respond
+
+yaml
+Copy
+Edit
+
+---
+
+## Directory Structure:
+
+web_server/
+├── CMakeLists.txt
+├── include/
+│ ├── server/
+│ ├── client/
+│ └── common/
+├── src/
+│ ├── server/
+│ ├── client/
+│ └── common/
+├── test/
+│ └── (unit tests)
+├── log.txt
+└── specifications.prd
+
+yaml
+Copy
+Edit
+
+---
+
+## Milestones and Timeline:
+
+| Week | Task |
+|------|------|
+| 1    | Setup proiect, CMake, socket server basic |
+| 2    | Threading + Command parsing server-side |
+| 3    | Implementare Client CLI, logging, cache |
+| 4    | Thread Pool, testing, documentație, demo script |
+
+---
+
+## Success Criteria:
+- Proiectul compilează și rulează fără memory leaks (testat cu valgrind).
+- Comenzile `GET /status` și `POST /data` funcționează și răspund corect.
+- Serverul gestionează minim 10 conexiuni simultane fără crash.
+- Loggingul este consistent și salvează toate acțiunile.
+- Codul este modular și documentat.
+
+---
+
+## Risks and Mitigations:
+
+| Risk                              | Mitigation                                      |
+|-----------------------------------|-------------------------------------------------|
+| Race condition la accesul la cache| Folosirea de mutex (std::mutex / shared_mutex) |
+| Leakuri de memorie                | Testare cu valgrind, smart pointers             |
+| Sockets închise brusc             | Try-catch + reconectare + error checking        |
+| Testare pe mai multe platforme    | Docker / Linux VM pentru testare multiplatform |
+
+---
+
+## Future Enhancements:
+- Suport pentru protocol binar (TLV) în loc de text.
+- Persistență a datelor pe disc (`data.txt`).
+- Implementare protocol REST complet (`PUT`, `DELETE`, etc.)
+- Criptare TLS folosind OpenSSL.
+- Interfață grafică client (Qt sau CLI interactiv).
+- Statistică per client (nr. comenzi, timp mediu de răspuns).
