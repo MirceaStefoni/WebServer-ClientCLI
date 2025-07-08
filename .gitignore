@@ -1,0 +1,14 @@
+# CMake and build files
+/build/
+/compile_commands.json
+
+# Log files
+*.log
+log.txt
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# User-specific files (e.g., for IDEs)
+.vscode/ 

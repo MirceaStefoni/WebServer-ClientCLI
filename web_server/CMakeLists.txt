@@ -8,6 +8,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+# Găsește pachetul de threading necesar pentru std::thread
+find_package(Threads REQUIRED)
+
 # Adăugarea directorului 'include' pentru a găsi fișierele header
 include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
@@ -15,6 +18,7 @@ include_directories(
 
 # Crearea executabilului pentru server
 add_executable(server src/server/main.cpp)
+target_link_libraries(server PRIVATE Threads::Threads)
 
 # Crearea executabilului pentru client
 add_executable(client src/client/main.cpp)
