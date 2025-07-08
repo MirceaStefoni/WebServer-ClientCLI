@@ -16,12 +16,25 @@ include_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
 )
 
+# Definirea surselor comune
+set(COMMON_SOURCES
+    src/common/protocol.cpp
+    src/common/logger.cpp
+)
+
 # Crearea executabilului pentru server
-add_executable(server src/server/main.cpp)
+add_executable(server 
+    src/server/main.cpp
+    ${COMMON_SOURCES}
+)
 target_link_libraries(server PRIVATE Threads::Threads)
 
 # Crearea executabilului pentru client
-add_executable(client src/client/main.cpp)
+add_executable(client 
+    src/client/main.cpp
+    src/client/tcp_client.cpp
+    ${COMMON_SOURCES}
+)
 
 # Mesaj de status pentru utilizator
 message(STATUS "CMake configuration complete. You can now build the project.")
