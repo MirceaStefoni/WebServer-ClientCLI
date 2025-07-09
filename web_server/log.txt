@@ -1,1 +1,10 @@
-# This file will be used for logging server requests. 
+[2025-07-09 02:19:45] === Server Starting ===
+[2025-07-09 02:19:45] DataCache initialized
+[2025-07-09 02:19:45] TCPServer created for port 8080
+[2025-07-09 02:19:45] ERROR: bind failed
+[2025-07-09 02:19:45] ERROR: bind failed
+[2025-07-09 02:19:45] ERROR: Failed to bind socket
+[2025-07-09 02:19:45] ERROR: Failed to initialize socket
+[2025-07-09 02:19:45] ERROR: Failed to start server
+[2025-07-09 02:19:45] TCPServer destroyed
+[2025-07-09 02:19:45] DataCache destroyed

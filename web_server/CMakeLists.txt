@@ -22,11 +22,17 @@ set(COMMON_SOURCES
     src/common/logger.cpp
 )
 
-# Crearea executabilului pentru server
-add_executable(server 
+# Definirea surselor pentru server
+set(SERVER_SOURCES
     src/server/main.cpp
+    src/server/tcp_server.cpp
+    src/server/client_handler.cpp
+    src/server/data_cache.cpp
     ${COMMON_SOURCES}
 )
+
+# Crearea executabilului pentru server
+add_executable(server ${SERVER_SOURCES})
 target_link_libraries(server PRIVATE Threads::Threads)
 
 # Crearea executabilului pentru client
